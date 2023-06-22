@@ -35,6 +35,8 @@ jobs:
           repository: ${{ env.TEST_REPO }}
 
       - name: Check if auto merge is enabled
-        run: gh pr view "$TEST_PR_URL"
+        run: |
+          gh pr view "$TEST_PR_URL" -t "{{ .autoMergeRequest }}" | tee pr-out
+          grep "enabled" pr-out
         env:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
