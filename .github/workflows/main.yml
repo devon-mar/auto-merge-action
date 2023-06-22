@@ -5,6 +5,7 @@
 
 env:
   TEST_PR_URL: https://github.com/devon-mar/auto-merge-action-test/pull/1
+  TEST_REPO: devon-mar/auto-merge-action-test
 
 jobs:
   test:
@@ -31,3 +32,9 @@ jobs:
           app_id: ${{ secrets.TEST_APP_ID }}
           app_private_key: ${{ secrets.TEST_APP_PRIVATE_KEY }}
           pr_url: ${{ env.TEST_PR_URL }}
+          repository: ${{ env.TEST_REPO }}
+
+      - name: Check if auto merge is enabled
+        run: gh pr view "$TEST_PR_URL"
+        env:
+          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
