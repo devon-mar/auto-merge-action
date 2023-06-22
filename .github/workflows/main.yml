@@ -6,6 +6,7 @@
 env:
   TEST_PR_URL: https://github.com/devon-mar/auto-merge-action-test/pull/1
   TEST_REPO: devon-mar/auto-merge-action-test
+  VIEW_COMMAND: gh pr view "$TEST_PR_URL" --json autoMergeRequest -t "{{ ne .autoMergeRequest nil }}"
 
 jobs:
   test:
@@ -22,7 +23,11 @@ jobs:
           repository: devon-mar/auto-merge-action-test
 
       - name: Disable auto merge on the PR
-        run: gh pr merge --disable-auto "$TEST_PR_URL"
+        run: |
+          gh pr merge --disable-auto "$TEST_PR_URL"
+          OUTPUT=`${{ env.VIEW_COMMAND }}`
+          echo "$OUTPUT"
+          [[ "$OUTPUT" = "false" ]]
         env:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
 
@@ -34,9 +39,10 @@ jobs:
           pr_url: ${{ env.TEST_PR_URL }}
           repository: ${{ env.TEST_REPO }}
 
-      - name: Check if auto merge is enabled
+      - name: Assert that auto merge is enabled
         run: |
-          gh pr view "$TEST_PR_URL" -t "{{ .autoMergeRequest }}" | tee pr-out
-          grep "enabled" pr-out
+          OUTPUT=`${{ env.VIEW_COMMAND }}`
+          echo "$OUTPUT"
+          [[ "$OUTPUT" = "true" ]]
         env:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
