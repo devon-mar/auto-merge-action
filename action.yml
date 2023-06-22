@@ -1,6 +1,10 @@
 ---
-name: "Auto-Merge"
-description: "Enable auto-merge on a PR."
+name: App Auto-Merge
+description: Enable auto-merge on a PR using a GitHub app.
+branding:
+  icon: git-merge
+  color: blue
+
 inputs:
   app_id:
     description: GitHub app ID
@@ -13,6 +17,7 @@ inputs:
     default: ${{ github.event.pull_request.html_url }}
   repository:
     description: The repository to request the app token for.
+    default: ${{ github.repository }}
 
 runs:
   using: composite
