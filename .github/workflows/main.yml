@@ -1,0 +1,21 @@
+---
+"on":
+  push:
+  pull_request:
+
+env:
+  TEST_PR_URL: https://github.com/devon-mar/auto-merge-action-test/pull/1
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Disable auto merge on the PR
+        run: gh pr merge --disable-auto "$TEST_PR_URL"
+
+      - uses: ./
+        with:
+          app_id: ${{ secrets.TEST_APP_ID }}
+          private_key: ${{ secrets.TEST_APP_PRIVATE_KEY }}
+          pr_url: ${{ env.TEST_PR_URL }}
