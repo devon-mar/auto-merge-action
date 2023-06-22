@@ -18,6 +18,7 @@ jobs:
         with:
           app_id: ${{ secrets.TEST_APP_ID }}
           private_key: ${{ secrets.TEST_APP_PRIVATE_KEY }}
+          repository: devon-mar/auto-merge-action-test
 
       - name: Disable auto merge on the PR
         run: gh pr merge --disable-auto "$TEST_PR_URL"
