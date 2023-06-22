@@ -29,5 +29,5 @@ jobs:
         uses: ./
         with:
           app_id: ${{ secrets.TEST_APP_ID }}
-          private_key: ${{ secrets.TEST_APP_PRIVATE_KEY }}
+          app_private_key: ${{ secrets.TEST_APP_PRIVATE_KEY }}
           pr_url: ${{ env.TEST_PR_URL }}
